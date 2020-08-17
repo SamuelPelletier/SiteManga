@@ -15,5 +15,6 @@ namespace SiteManga.Models
         public string Title { get; set; }
         [Required]
         public string Path { get; set; }
+        public virtual Manga manga { get; set; }
     }
 }

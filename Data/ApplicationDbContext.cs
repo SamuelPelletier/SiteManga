@@ -17,5 +17,7 @@ namespace SiteManga.Data
         public DbSet<Manga> Mangas { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Editor> Editors { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<MangaOrder> MangaOrders { get; set; }
     }
 }

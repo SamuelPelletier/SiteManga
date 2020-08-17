@@ -39,7 +39,7 @@ namespace SiteManga.Models
         public double Price { get; set; }
         [Required]
         public int NumberOfPages { get; set; }
-        public Editor Editor { get; set; }
-        public List<Image> Images { get; set; }
+        public virtual Editor Editor { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
     }
 }

@@ -7,9 +7,10 @@
 
         <h1 class="my-4">Site Manga</h1>
         <div class="list-group">
-            <a href="#" class="list-group-item">Category 1</a>
-            <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a>
+            @foreach (var color in Enum.GetValues(typeof(Manga.Colors)))
+            {
+                <a href="#" class="list-group-item">@color</a>
+            }
         </div>
 
     </div>

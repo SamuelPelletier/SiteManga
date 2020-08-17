@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteManga.Data;
 using SiteManga.Models;
+using SiteManga.Repository;
 
 namespace SiteManga
 {
@@ -22,7 +23,8 @@ namespace SiteManga
         // GET: Mangas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Mangas.ToListAsync());
+
+            return View(await _context.Mangas.Include(x => x.Editor).ToListAsync());
         }
 
         // GET: Mangas/Details/5
@@ -46,6 +48,11 @@ namespace SiteManga
         // GET: Mangas/Create
         public IActionResult Create()
         {
+            var editors = _context.Editors;
+            ViewBag.Editors = editors;
+            ImageRepository imageRepository = new ImageRepository(this._context);
+            var images = imageRepository.getImagesNotBind();
+            ViewBag.Images = images;
             return View();
         }
 
@@ -54,10 +61,13 @@ namespace SiteManga
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ShortDescription,LongDescription,Height,Width,Length,Color,Weight,Price,NumberOfPages")] Manga manga)
+        public async Task<IActionResult> Create([Bind("Id,Name,ShortDescription,LongDescription,Height,Width,Length,Color,Weight,Price,NumberOfPages,Editor,Images")] Manga manga)
         {
             if (ModelState.IsValid)
             {
+                Editor editor = _context.Editors.Find(int.Parse(HttpContext.Request.Form["Editor"]));
+                manga.Editor = editor;
+                
                 _context.Add(manga);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -74,6 +84,14 @@ namespace SiteManga
             }
 
             var manga = await _context.Mangas.FindAsync(id);
+
+            var editors = _context.Editors;
+            ViewBag.Editors = editors;
+            ImageRepository imageRepository = new ImageRepository(this._context);
+            List<Image> images = imageRepository.getImagesNotBind();
+            images = images.Concat(manga.Images).ToList();
+            ViewBag.Images = images;
+
             if (manga == null)
             {
                 return NotFound();
@@ -95,6 +113,16 @@ namespace SiteManga
 
             if (ModelState.IsValid)
             {
+                Editor editor = _context.Editors.Find(int.Parse(HttpContext.Request.Form["Editor"]));
+                manga.Editor = editor;
+                var imagesId = HttpContext.Request.Form["Images"].ToArray();
+                List<Image> images =  new List<Image>();
+                foreach(string imageId in imagesId)
+                {
+                    images.Add(_context.Images.Find(int.Parse(imageId)));
+                }
+                manga.Images = images;
+
                 try
                 {
                     _context.Update(manga);

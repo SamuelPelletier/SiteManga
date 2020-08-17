@@ -42,9 +42,6 @@ namespace SiteManga.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MangaId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -53,9 +50,12 @@ namespace SiteManga.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("mangaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MangaId");
+                    b.HasIndex("mangaId");
 
                     b.ToTable("Image");
                 });
@@ -108,11 +108,99 @@ namespace SiteManga.Migrations
                     b.ToTable("Manga");
                 });
 
+            modelBuilder.Entity("SiteManga.Models.MangaOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MangaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MangaId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("MangaOrders");
+                });
+
+            modelBuilder.Entity("SiteManga.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressInvoiceCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressInvoiceCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressInvoiceOption1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressInvoiceOption2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressInvoicePostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressInvoiceSteelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingOption1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingOption2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingPostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressShippingSteelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ShippingTax")
+                        .HasColumnType("float");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalWeight")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("SiteManga.Models.Image", b =>
                 {
-                    b.HasOne("SiteManga.Models.Manga", null)
+                    b.HasOne("SiteManga.Models.Manga", "manga")
                         .WithMany("Images")
-                        .HasForeignKey("MangaId");
+                        .HasForeignKey("mangaId");
                 });
 
             modelBuilder.Entity("SiteManga.Models.Manga", b =>
@@ -120,6 +208,17 @@ namespace SiteManga.Migrations
                     b.HasOne("SiteManga.Models.Editor", "Editor")
                         .WithMany()
                         .HasForeignKey("EditorId");
+                });
+
+            modelBuilder.Entity("SiteManga.Models.MangaOrder", b =>
+                {
+                    b.HasOne("SiteManga.Models.Manga", "Manga")
+                        .WithMany()
+                        .HasForeignKey("MangaId");
+
+                    b.HasOne("SiteManga.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteManga.Data;
 using SiteManga.Models;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace SiteManga
 {
@@ -54,10 +57,21 @@ namespace SiteManga
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Path")] Image image)
+        public async Task<IActionResult> Create([Bind("Id,Title,Path")] Image image, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                string url =  Path.GetRandomFileName() + file.FileName;
+                if (file.Length > 0)
+                {
+                    var filePath =  Path.GetFullPath("wwwroot/images/" + url);
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    image.Path = url;
+                }
                 _context.Add(image);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +100,7 @@ namespace SiteManga
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Path")] Image image)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Path")] Image image, IFormFile file)
         {
             if (id != image.Id)
             {
@@ -97,6 +111,17 @@ namespace SiteManga
             {
                 try
                 {
+                    string url = Path.GetRandomFileName() + file.FileName;
+                    if (file.Length > 0)
+                    {
+                        var filePath = Path.GetFullPath("wwwroot/images/" + url);
+
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        image.Path = url;
+                    }
                     _context.Update(image);
                     await _context.SaveChangesAsync();
                 }
