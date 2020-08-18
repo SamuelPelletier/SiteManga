@@ -197,3 +197,4 @@ C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\
 C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Details.cshtml.g.cs
 C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Edit.cshtml.g.cs
 C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Index.cshtml.g.cs
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Cart\Index.cshtml.g.cs

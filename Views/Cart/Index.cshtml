@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "My Cart";
+}
+
+<h1>My Cart</h1>
+
+@foreach(MangaOrder mangaOrder in ViewBag.MangaOrders)
+{
+<div class="cart-product">
+    <p>@mangaOrder.Manga.Name</p>
+    <a href="@Url.Action("RemoveQuantity", "Cart", mangaOrder.Manga)"><button class="btn btn-danger">-</button></a>
+    <p>@mangaOrder.Quantity</p>
+    <a href="@Url.Action("AddQuantity", "Cart", mangaOrder.Manga)"><button class="btn btn-success">+</button></a>
+</div>
+}
+

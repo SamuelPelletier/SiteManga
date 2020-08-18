@@ -77,3 +77,11 @@ body > .container {
     position: inherit;
     margin: auto;
 }
+
+.cart-product{
+    display: flex;
+}
+
+.cart-product a{
+    margin: 0 20px;
+}
