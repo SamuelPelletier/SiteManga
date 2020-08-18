@@ -217,7 +217,7 @@ namespace SiteManga.Migrations
                         .HasForeignKey("MangaId");
 
                     b.HasOne("SiteManga.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("MangaOrders")
                         .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618

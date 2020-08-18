@@ -33,5 +33,6 @@ namespace SiteManga.Models
         public double ShippingTax { get; set; }
         public double TotalPrice { get; set; }
         public int State { get; set; }
+        public virtual List<MangaOrder> MangaOrders { get; set; }
     }
 }

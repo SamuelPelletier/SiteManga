@@ -192,3 +192,8 @@ C:\Users\samue\source\repos\SiteManga\bin\Debug\netcoreapp3.1\Castle.Core.dll
 C:\Users\samue\source\repos\SiteManga\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Proxies.dll
 C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\SiteManga.csproj.CoreCompileInputs.cache
 C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\SiteManga.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Create.cshtml.g.cs
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Delete.cshtml.g.cs
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Details.cshtml.g.cs
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Edit.cshtml.g.cs
+C:\Users\samue\source\repos\SiteManga\obj\Debug\netcoreapp3.1\Razor\Views\Order\Index.cshtml.g.cs

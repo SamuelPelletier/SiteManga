@@ -1,0 +1,113 @@
+﻿@model SiteManga.Models.Order
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="date" class="control-label"></label>
+                <input asp-for="date" class="form-control" />
+                <span asp-validation-for="date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingSteelName" class="control-label"></label>
+                <input asp-for="AddressShippingSteelName" class="form-control" />
+                <span asp-validation-for="AddressShippingSteelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingPostalCode" class="control-label"></label>
+                <input asp-for="AddressShippingPostalCode" class="form-control" />
+                <span asp-validation-for="AddressShippingPostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingCountry" class="control-label"></label>
+                <input asp-for="AddressShippingCountry" class="form-control" />
+                <span asp-validation-for="AddressShippingCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingCity" class="control-label"></label>
+                <input asp-for="AddressShippingCity" class="form-control" />
+                <span asp-validation-for="AddressShippingCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingOption1" class="control-label"></label>
+                <input asp-for="AddressShippingOption1" class="form-control" />
+                <span asp-validation-for="AddressShippingOption1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressShippingOption2" class="control-label"></label>
+                <input asp-for="AddressShippingOption2" class="form-control" />
+                <span asp-validation-for="AddressShippingOption2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoiceSteelName" class="control-label"></label>
+                <input asp-for="AddressInvoiceSteelName" class="form-control" />
+                <span asp-validation-for="AddressInvoiceSteelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoiceCountry" class="control-label"></label>
+                <input asp-for="AddressInvoiceCountry" class="form-control" />
+                <span asp-validation-for="AddressInvoiceCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoiceCity" class="control-label"></label>
+                <input asp-for="AddressInvoiceCity" class="form-control" />
+                <span asp-validation-for="AddressInvoiceCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoicePostalCode" class="control-label"></label>
+                <input asp-for="AddressInvoicePostalCode" class="form-control" />
+                <span asp-validation-for="AddressInvoicePostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoiceOption1" class="control-label"></label>
+                <input asp-for="AddressInvoiceOption1" class="form-control" />
+                <span asp-validation-for="AddressInvoiceOption1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressInvoiceOption2" class="control-label"></label>
+                <input asp-for="AddressInvoiceOption2" class="form-control" />
+                <span asp-validation-for="AddressInvoiceOption2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalWeight" class="control-label"></label>
+                <input asp-for="TotalWeight" class="form-control" />
+                <span asp-validation-for="TotalWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingTax" class="control-label"></label>
+                <input asp-for="ShippingTax" class="form-control" />
+                <span asp-validation-for="ShippingTax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalPrice" class="control-label"></label>
+                <input asp-for="TotalPrice" class="form-control" />
+                <span asp-validation-for="TotalPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

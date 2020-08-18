@@ -23,7 +23,7 @@ namespace SiteManga.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(this.context.Mangas);
         }
 
         public IActionResult Privacy()

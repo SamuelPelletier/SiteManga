@@ -61,3 +61,19 @@ html {
 .fixed-top{
     position: inherit;
 }
+
+body > .container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#carousel{
+    background-color: lightgray;
+    border-radius:10px;
+}
+
+#carousel img {
+    max-height: 200px;
+    position: inherit;
+    margin: auto;
+}
