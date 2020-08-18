@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using SiteManga.Controllers;
 using SiteManga.Data;
 using SiteManga.Models;
 
@@ -54,66 +57,37 @@ namespace SiteManga
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,date,AddressShippingSteelName,AddressShippingPostalCode,AddressShippingCountry,AddressShippingCity,AddressShippingOption1,AddressShippingOption2,AddressInvoiceSteelName,AddressInvoiceCountry,AddressInvoiceCity,AddressInvoicePostalCode,AddressInvoiceOption1,AddressInvoiceOption2,TotalWeight,ShippingTax,TotalPrice,State")] Order order)
+        public IActionResult Create([Bind("Id,AddressShippingSteelName,AddressShippingPostalCode,AddressShippingCountry,AddressShippingCity,AddressShippingOption1,AddressShippingOption2,AddressInvoiceSteelName,AddressInvoiceCountry,AddressInvoiceCity,AddressInvoicePostalCode,AddressInvoiceOption1,AddressInvoiceOption2")] Order order)
         {
             if (ModelState.IsValid)
             {
+                var mangasSession = HttpContext.Session.GetString("mangaOrders");
+                List<MangaOrder> mangaOrders = JsonConvert.DeserializeObject<List<MangaOrder>>(mangasSession);
+                order.date = DateTime.Now;
+                double totalPrice = 0;
+                double totalWeight = 0;
+
                 _context.Add(order);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
+                foreach (MangaOrder mangaOrder in mangaOrders)
+                {
+                    totalPrice += mangaOrder.Manga.Price * mangaOrder.Quantity;
+                    totalWeight += mangaOrder.Manga.Weight * mangaOrder.Quantity;
+                    mangaOrder.Manga = _context.Mangas.Find(mangaOrder.Manga.Id);
+                    mangaOrder.Order = order;
+                    _context.Add(mangaOrder);
+                }
+
+                order.TotalPrice = totalPrice;
+                order.TotalWeight = totalWeight;
+
+                order.MangaOrders = mangaOrders;
+                _context.Update(order);
+                _context.SaveChanges();
+                HttpContext.Session.SetString("mangaOrders", JsonConvert.SerializeObject(new List<MangaOrder>()));
                 return RedirectToAction(nameof(Index));
             }
-            return View(order);
-        }
-
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,date,AddressShippingSteelName,AddressShippingPostalCode,AddressShippingCountry,AddressShippingCity,AddressShippingOption1,AddressShippingOption2,AddressInvoiceSteelName,AddressInvoiceCountry,AddressInvoiceCity,AddressInvoicePostalCode,AddressInvoiceOption1,AddressInvoiceOption2,TotalWeight,ShippingTax,TotalPrice,State")] Order order)
-        {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(order);
+            return RedirectToAction("Index","Cart");
         }
 
         // GET: Orders/Delete/5

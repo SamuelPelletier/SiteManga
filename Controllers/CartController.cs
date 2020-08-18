@@ -74,7 +74,7 @@ namespace SiteManga.Controllers
                 if (sessionMangaOrder.Manga.Id == manga.Id)
                 {
                     sessionMangaOrder.Quantity = sessionMangaOrder.Quantity - 1;
-                    if(sessionMangaOrder.Quantity == 0)
+                    if (sessionMangaOrder.Quantity == 0)
                     {
                         mangaOrders.Remove(sessionMangaOrder);
                     }
