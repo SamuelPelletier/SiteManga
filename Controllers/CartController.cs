@@ -6,14 +6,34 @@ using Microsoft.AspNetCore.Mvc;
 using SiteManga.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SiteManga.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SiteManga.Controllers
 {
+    [AllowAnonymous]
     public class CartController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public CartController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            ViewBag.MangaOrders = JsonConvert.DeserializeObject<List<MangaOrder>>(HttpContext.Session.GetString("mangaOrders"));
+            List<MangaOrder> mangaOrders = new List<MangaOrder>();
+            if (HttpContext.Session.GetString("mangaOrders") != null)
+            {
+                mangaOrders = JsonConvert.DeserializeObject<List<MangaOrder>>(HttpContext.Session.GetString("mangaOrders"));
+            }
+
+            foreach(MangaOrder mangaOrder in mangaOrders)
+            {
+                mangaOrder.Manga = _context.Mangas.Find(mangaOrder.Manga.Id);
+            }
+            ViewBag.MangaOrders = mangaOrders;
             return View();
         }
 

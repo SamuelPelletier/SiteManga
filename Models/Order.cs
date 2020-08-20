@@ -16,7 +16,7 @@ namespace SiteManga.Models
         }
 
         public int Id { get; set; }
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
         public string AddressShippingSteelName { get; set; }
         public string AddressShippingPostalCode { get; set; }
         public string AddressShippingCountry { get; set; }
@@ -33,6 +33,8 @@ namespace SiteManga.Models
         public double ShippingTax { get; set; }
         public double TotalPrice { get; set; }
         public int State { get; set; }
+        public virtual User User { get; set; }
         public virtual List<MangaOrder> MangaOrders { get; set; }
+        
     }
 }

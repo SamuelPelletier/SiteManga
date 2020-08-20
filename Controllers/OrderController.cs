@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +15,7 @@ using SiteManga.Models;
 
 namespace SiteManga
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,9 +26,16 @@ namespace SiteManga
         }
 
         // GET: Orders
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.ToListAsync());
+        }
+
+        public async Task<IActionResult> IndexUser()
+        {
+            string userString = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return View(await _context.Orders.Where(o => o.User.Id == userString).ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -63,7 +73,7 @@ namespace SiteManga
             {
                 var mangasSession = HttpContext.Session.GetString("mangaOrders");
                 List<MangaOrder> mangaOrders = JsonConvert.DeserializeObject<List<MangaOrder>>(mangasSession);
-                order.date = DateTime.Now;
+                order.Date = DateTime.Now;
                 double totalPrice = 0;
                 double totalWeight = 0;
 
@@ -81,16 +91,18 @@ namespace SiteManga
                 order.TotalPrice = totalPrice;
                 order.TotalWeight = totalWeight;
 
+                order.User = _context.Users.Find(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 order.MangaOrders = mangaOrders;
                 _context.Update(order);
                 _context.SaveChanges();
                 HttpContext.Session.SetString("mangaOrders", JsonConvert.SerializeObject(new List<MangaOrder>()));
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexUser));
             }
             return RedirectToAction("Index","Cart");
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -111,6 +123,7 @@ namespace SiteManga
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Orders.FindAsync(id);

@@ -41,5 +41,6 @@ namespace SiteManga.Models
         public int NumberOfPages { get; set; }
         public virtual Editor Editor { get; set; }
         public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<MangaOrder> MangaOrders { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SiteManga.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SiteManga.Data;
 using SiteManga.Models;
 using System;
 using System.Collections.Generic;

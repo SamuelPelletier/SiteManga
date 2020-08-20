@@ -10,9 +10,11 @@ using SiteManga.Data;
 using SiteManga.Models;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SiteManga
 {
+    [Authorize(Roles = "admin")]
     public class ImageController : Controller
     {
         private readonly ApplicationDbContext _context;

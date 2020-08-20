@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using SiteManga.Repository;
 
 namespace SiteManga
 {
+    [Authorize(Roles = "admin")]
     public class MangaController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,6 +30,7 @@ namespace SiteManga
         }
 
         // GET: Mangas/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -61,13 +64,20 @@ namespace SiteManga
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ShortDescription,LongDescription,Height,Width,Length,Color,Weight,Price,NumberOfPages,Editor,Images")] Manga manga)
+        public async Task<IActionResult> Create([Bind("Id,Name,ShortDescription,LongDescription,Height,Width,Length,Color,Weight,Price,NumberOfPages")] Manga manga)
         {
             if (ModelState.IsValid)
             {
                 Editor editor = _context.Editors.Find(int.Parse(HttpContext.Request.Form["Editor"]));
                 manga.Editor = editor;
-                
+                var imagesId = HttpContext.Request.Form["Images"].ToArray();
+                List<Image> images = new List<Image>();
+                foreach (string imageId in imagesId)
+                {
+                    images.Add(_context.Images.Find(int.Parse(imageId)));
+                }
+                manga.Images = images;
+
                 _context.Add(manga);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

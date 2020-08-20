@@ -11,7 +11,12 @@
     <a href="@Url.Action("RemoveQuantity", "Cart", mangaOrder.Manga)"><button class="btn btn-danger">-</button></a>
     <p>@mangaOrder.Quantity</p>
     <a href="@Url.Action("AddQuantity", "Cart", mangaOrder.Manga)"><button class="btn btn-success">+</button></a>
+    <img src="@Url.Content("~/images/" + mangaOrder.Manga.Images.First().Path)">
 </div>
+}
+@if(ViewBag.MangaOrders.Count == 0)
+{
+    <div><p>Your order is empty</p></div>
 }
 
 <a href="@Url.Action("Create", "Order")"><button class="btn btn-success">Confirm my cart</button></a>
